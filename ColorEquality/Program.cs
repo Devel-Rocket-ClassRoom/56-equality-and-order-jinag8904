@@ -15,6 +15,11 @@ class Color : IEquatable<Color>
 
     public bool Equals(Color other)
     {
-        throw new NotImplementedException();
+        return (R == other.R && G == other.G && B == other.B);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return 
     }
 }
