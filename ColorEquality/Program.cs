@@ -1,4 +1,20 @@
 using System;
 
-// README.md를 읽고 코드를 작성하세요.
-Console.WriteLine();
+class Color : IEquatable<Color>
+{
+    int R;
+    int G;
+    int B;
+
+    public Color(int r, int g, int b)
+    {
+        R = r; 
+        G = g; 
+        B = b;
+    }
+
+    public bool Equals(Color other)
+    {
+        throw new NotImplementedException();
+    }
+}
