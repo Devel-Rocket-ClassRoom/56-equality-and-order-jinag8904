@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 List<Item> items = new()
 {
@@ -13,12 +14,31 @@ List<Item> items = new()
 };
 
 Console.WriteLine("=== 타입별 그룹핑 ===");
+var typeComparer = new ItemTypeComparer();
+var typeGroup = items.GroupBy(item => item, typeComparer);
 
-// 배고픔
-
-foreach (Item item in items)
+foreach (var pair in typeGroup)
 {
+    Console.WriteLine($"[{pair.Key.Type}]");
 
+    foreach (var value in pair)
+    {        
+        Console.WriteLine($"- {value.Name} ({value.Grade})");
+    }
+}
+
+Console.WriteLine("\n=== 등급별 그룹핑 ===");
+var gradeComparer = new ItemGradeComparer();
+var gradeGroup = items.GroupBy(item => item, gradeComparer);
+
+foreach (var pair in gradeGroup)
+{
+    Console.WriteLine($"[{pair.Key.Grade}]");
+
+    foreach (var value in pair)
+    {
+        Console.WriteLine($"- {value.Name} ({value.Type})");
+    }
 }
 
 class Item
@@ -33,8 +53,6 @@ class Item
         Type = type;
         Grade = grade;
     }
-
-    public override string ToString() => $"- {Name} ({Grade})";
 }
 
 class ItemTypeComparer : EqualityComparer<Item>
@@ -46,7 +64,7 @@ class ItemTypeComparer : EqualityComparer<Item>
 
     public override int GetHashCode(Item obj)
     {
-        return HashCode.Combine(obj.Name, obj.Type, obj.Grade);
+        return HashCode.Combine(obj.Type);
     }
 }
 
@@ -59,6 +77,6 @@ class ItemGradeComparer : EqualityComparer<Item>
 
     public override int GetHashCode(Item obj)
     {
-        return HashCode.Combine(obj.Name, obj.Type, obj.Grade);
+        return HashCode.Combine(obj.Grade);
     }
 }
